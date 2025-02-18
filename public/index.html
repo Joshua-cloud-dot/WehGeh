@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>WG Putzplan</title>
+
+    <!-- google font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Indie+Flower&family=Kumar+One&display=swap" rel="stylesheet">
+
+    <link href="styles/output.css" rel="stylesheet"/>
+  </head>
+  <body>
+    <header>
+      <h1 class="text-3xl underline">WehGeh Putzplan</h1> 
+    </header>
+    <main>
+      <div class="table-wrapper centered" style="overflow-x:auto;">
+        <table class="table-auto border-collapse border border-gray-400 bg-slate-900" id="table">
+          <caption>
+            Aktuelle Kalenderwoche: <span id="calendar-week"></span>
+          </caption>
+          <thead>
+            <tr class=" text-xl" id="tab-head-row" >
+              <th class="border border-gray-400 ">KW</th>
+              <th class="border border-gray-400 ">Karol</th>
+              <th class="border border-gray-400 ">Konstantin</th>
+              <th class="border border-gray-400 ">Joshua</th>
+            </tr>
+          </thead>
+        </table>
+      </div>
+    </main>
+  </body>
+  <script src="scripts.js"></script>
+</html>
+

@@ -1,0 +1,26 @@
+{
+  "name": "server",
+  "version": "1.0.2",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node --watch server.js"
+  },
+  "keywords": [
+    "flatshare",
+    "beginner",
+    "raspberrypi"
+  ],
+  "author": "Joshua Heninger",
+  "license": "MIT",
+  "description": "A server to handle flatshare cleaning tasks",
+  "dependencies": {
+    "@tailwindcss/cli": "^4.0.5",
+    "body-parser": "^1.20.3",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "nodemailer": "^6.10.0",
+    "sqlite3": "^5.1.7",
+    "tailwindcss": "^4.0.5"
+  }
+}

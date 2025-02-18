@@ -1,0 +1,13 @@
+Separate API Logic from UI Rendering:
+
+Make sure that your API calls and logic for fetching data are clearly separated from the UI rendering logic. This improves maintainability and makes debugging easier.
+Use Proper Asynchronous Flow:
+
+Use async/await consistently to handle asynchronous operations, which makes the flow more predictable and reduces callback hell or the need for nested .then() calls.
+Don't start rendering the UI until all necessary data is fetched and processed.
+Pre-fetch Data for UI Rendering:
+
+Fetch all the data you need before trying to render the table, rather than trying to fetch data inside the rendering logic itself.
+Batch Requests or Use Parallel Fetching When Possible:
+
+If you're fetching data for multiple rooms or people, try to fetch them in parallel (using Promise.all), but ensure that each fetch resolves before it's needed in the UI.
