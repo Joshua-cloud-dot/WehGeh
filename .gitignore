@@ -5,3 +5,13 @@ node_modules/
 
 # dotenv environment variable files
 .env
+
+# database
+db/
+
+# other dirs
+playground/
+.vscode/
+
+
+

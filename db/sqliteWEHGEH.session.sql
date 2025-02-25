@@ -51,8 +51,10 @@ SELECT * FROM Mitbewohner;
 SELECT * FROM Raum;
 SELECT * FROM Reinigung;
 
-DELETE FROM Reinigung
 
+Begin TRANSACTION
+DELETE FROM Reinigung WHERE RaumBez LIKE ""
+commit
 
 SELECT Erledigt FROM Reinigung WHERE Kalenderwoche=6 AND RaumBez = 'Bäder' AND MitName='Joshua'
 UPDATE Reinigung SET Erledigt=FALSE
@@ -61,3 +63,7 @@ UPDATE Reinigung SET Erledigt=FALSE
     WHERE MitName = 'Konstantin'
     AND RaumBez = 'Wohnzimmer'
     AND Kalenderwoche = 4;
+
+
+INSERT INTO Reinigung (MitName, RaumBez, Kalenderwoche, Erledigt)
+SELECT 

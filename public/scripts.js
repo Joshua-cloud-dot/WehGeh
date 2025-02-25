@@ -1,20 +1,21 @@
-// const { response } = require("express");
+/* 
+ * Script for the Weh Geh Putzplan Web-App
+ * its purpose is to render and update the Putzplan (table)
+ * via API requests
+ *
+ *
+ *
+ * */
+
+
 const weekNumberSpan = document.getElementById("calendar-week");
 const firstTableRow = document.getElementById("tab-head-row");
 const table = document.getElementById("table");
 
 
-const bewohner = ["Karol", "Konstantin", "Joshua"];
 const redColor = "bg-red-950";
 const greenColor = "bg-green-900";
 
-// TODO via API
-const roomsToCleanEvenWeek = [ "Bäder", "", "Wohnzimmer"];
-const roomsToCleanOddWeek = [ "", "Küche", "Bäder"];
-
-// alte version mit 3 zu 1
-// const roomsToCleanEvenWeek = [ "Bäder", "", ""];
-// const roomsToCleanOddWeek = [ "Wohnzimmer", "Küche", "Bäder"];
 
 // util functions
 function getWeekNumber(d) {
@@ -22,29 +23,28 @@ function getWeekNumber(d) {
   d = new Date(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()));
   // Set to nearest Thursday: current date + 4 - current day number
   // Make Sunday's day number 7
-  d.setUTCDate(d.getUTCDate() + 4 - (d.getUTCDay()||7));
+  d.setUTCDate(d.getUTCDate() + 4 - (d.getUTCDay() || 7));
   // Get first day of year
-  var yearStart = new Date(Date.UTC(d.getUTCFullYear(),0,1));
+  var yearStart = new Date(Date.UTC(d.getUTCFullYear(), 0, 1));
   // Calculate full weeks to nearest Thursday
-  var weekNo = Math.ceil(( ( (d - yearStart) / 86400000) + 1)/7);
+  var weekNo = Math.ceil((((d - yearStart) / 86400000) + 1) / 7);
   // Return array of year and week number
   return [d.getUTCFullYear(), weekNo];
 }
 
-const rotateArrayRight = (arr, rotNum) => {
-  let last;
-  let cpArr = [...arr];
-  for (let i = 0; i < rotNum; i++) {
-    last = cpArr.pop();
-    cpArr.unshift(last);
+// get current Week Number
+let currentWeekNum = getWeekNumber(new Date())[1];
+
+
+// Fetch all necessary Data for rendering from the API
+const fetchTableRenderData = async (weekNum) => {
+  const response = await fetch(`/${weekNum}/render-table`);
+  if (!response.ok) {
+    throw new Error(`Error: ${response.statusText}`);
   }
-  return cpArr;
+  const data = await response.json();
+  return data;
 };
-
-const assignment = (rooms, weekNum) => {
-  return (rotateArrayRight(rooms, (weekNum) % rooms.length));
-};
-
 
 
 const reinigungErledigt = async (mitName, wn, raumBez) => {
@@ -62,7 +62,8 @@ const reinigungErledigt = async (mitName, wn, raumBez) => {
 };
 
 
-const changeReinigungStatus = (mitName, wn, raumBez) =>  {
+// Handle cleaning updates 
+const changeReinigungStatus = (mitName, wn, raumBez) => {
   const tdEl = document.getElementById(`${mitName}-${wn}-${raumBez}`);
   let erledigt;
   if (tdEl.classList.contains(greenColor)) {
@@ -76,72 +77,55 @@ const changeReinigungStatus = (mitName, wn, raumBez) =>  {
   fetch(`/Reinigung`, {
     method: "POST",
     headers: { "Content-type": "application/json" },
-    body: JSON.stringify({ Erledigt: erledigt, MitName: mitName, RaumBez: raumBez, Kalenderwoche: wn})
+    body: JSON.stringify({ Erledigt: erledigt, MitName: mitName, RaumBez: raumBez, Kalenderwoche: wn })
   })
-  .then(response => response)
-  .then(json => {
-    console.log(json);
-  })
-  .catch(error => console.error('Error:', error));
+    .then(response => response)
+    .then(json => {
+      console.log(json);
+    })
+    .catch(error => console.error('Error:', error));
 };
 
 
 
-let currentWeekNum = getWeekNumber(new Date())[1];
-// let currentWeekNum = 30;
+/*
+ * render Table from gathered Data on week nums
+ */
+const fillTable = async (currentWeekNum) => {
 
 
+  let tableStr = `<tbody class= "bg-slate-700 text-slate-400" > `;
+  const tableData = await fetchTableRenderData(currentWeekNum);
 
-
-
-
-const fillTable = async (weekNum) => {
-  let start = weekNum - 2;
-  let arr;
-  
-  let tableStr = `<tbody class="bg-slate-700 text-slate-400">`;
-  for (let i = start; i <= weekNum + 2; i++) {
-    
-    if (i % 2 == 0) {
-      arr = assignment(roomsToCleanEvenWeek, i / 2);
-    } else {
-      arr = assignment(roomsToCleanOddWeek, Math.floor(i / 2));
-    }
+  // for each week generate one table row 
+  for (const weekNum in tableData) {
+    const weekPlan = tableData[weekNum];
+    console.log(weekPlan);
 
     let rowStr = `
       <tr>
-        <td 
-          class="td-week-number ${i === weekNum ? 'text-3xl"': "text-sm"} ">${i}</td>`;
+      <td
+      class="td-week-number ${weekNum == currentWeekNum ? 'text-3xl"' : "text-sm"} ">${weekNum}</td>`;
 
-    // render one row
-    let a = await Promise.all(arr.map(async (assigned, index) => { 
-      if (assigned == "") {
-        return `<td class="break">-</td>`;
-      } else {
-        // Call reinigungErledigt and await the result
-        const done = await reinigungErledigt(bewohner[index], i, assigned);
-        console.log(done ); // Check if 'done' is now populated
-
-        // render divs with classes based on the result
-        return `
+    // add rooms to table as per the cleaning assignment
+    weekPlan.forEach(cleaning => {
+      if (cleaning.raumBez == "") {
+        rowStr += `<td class="break">-</td>`;
+      } else
+        // render divs with classes based on the erledigt status of the cleaning
+        rowStr += `
           <td>
-            <div id="${bewohner[index]}-${i}-${assigned}" class="text-sm font-thin ${done.Erledigt === 1 ? greenColor : redColor} button" onclick="changeReinigungStatus('${bewohner[index]}', ${i}, '${assigned}')">
-              ${assigned}  <!-- Example: Show status -->
+            <div id="${cleaning.mitName}-${weekNum}-${cleaning.raumBez}" class="text-sm font-thin ${cleaning.erledigt === true ? greenColor : redColor} button" onclick="changeReinigungStatus('${cleaning.mitName}', ${weekNum}, '${cleaning.raumBez}')">
+              ${cleaning.raumBez}
             </div>
           </td>`;
-      }
-    }));
-
-    rowStr += a.join("");
-
+    });
     rowStr += `</tr>`;
     tableStr += rowStr;
   }
   tableStr += `</tbody>`;
   table.innerHTML += tableStr;
 };
-
-
 
 
 // render index.html
