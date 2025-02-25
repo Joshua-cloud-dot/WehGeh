@@ -1,4 +1,4 @@
-const db = require('./db/dbCon.js').connectDB();
+const dbCon = require('./db/dbCon.js');
 const sqlite3 = require('sqlite3').verbose();
 
 const rotateArrayRight = (arr, rotNum) => {
@@ -62,12 +62,16 @@ const getPutzplanForWeekNum = async (wn) => {
    *
    */
   // Hilfsfunktion für Datenbankabfrage
+
+  const db = dbCon.connectDB();
+
   const checkOrCreateCleaning = (assignment) => {
     return new Promise((resolve, reject) => {
       if (assignment.raumBez === "") {
         resolve(); // Falls RaumBez leer ist, nichts tun
         return;
       }
+
 
       let sql = `
         SELECT MitName, RaumBez, Kalenderwoche, Erledigt FROM Reinigung 
@@ -104,6 +108,7 @@ const getPutzplanForWeekNum = async (wn) => {
     await checkOrCreateCleaning(assignment); // Warten, bis jede Datenbankoperation abgeschlossen ist
   }
 
+  db.close();
   return cleaningPlan;
 };
 

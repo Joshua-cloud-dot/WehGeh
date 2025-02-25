@@ -8,7 +8,7 @@ const https = require('https');
 const http = require('http');
 const fs = require('fs');
 const logicPutzplan = require('./logicPutzplan.js');
-const db = require('./db/dbCon.js').connectDB();
+const dbCon = require('./db/dbCon.js');
 
 
 // TODO: db muss alte Daten löschen oder noch Attribut Jahr bekommen
@@ -96,7 +96,10 @@ app.get("/:weekNum/render-table", (req, res) => {
 app.route('/Reinigung')
   .get(function (req, res) {
     console.log(req.query);
+
     if (req.query.MitName && req.query.RaumBez && req.query.Kalenderwoche) {
+      const db = dbCon.connectDB();
+
       db.serialize(() => {
 
         // Query if data exists
@@ -143,6 +146,7 @@ app.route('/Reinigung')
           }
         });
       });
+      db.close();
     } else {
       res.sendStatus(404);
     }
@@ -159,12 +163,16 @@ app.route('/Reinigung')
     let params = Object.keys(req.body).map(function (k) { return req.body[k] });
     console.log(params)
 
+    
+    const db = dbCon.connectDB();
+
     db.run(sql, params, (err) => {
       if (err) {
         console.error(err);
       }
     });
 
+    db.close();
 
     res.send("Data received: " + JSON.stringify(req.body));
   });

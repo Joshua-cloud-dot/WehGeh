@@ -7,17 +7,11 @@ const path = require('path');
 
 
 function connectDB() {
-  console.log("Hi from db");
-  console.log(path.join(__dirname), 'mydbLite.db');
-
   const db = new sqlite3.Database(path.join(__dirname, 'mydbLite.db'), (err) => {
     if (err) {
       console.error('Error connecting to SQLite database', err);
-    } else {
-      console.log('Connected to SQLite database. From dbCon');
-    }
+    } 
   });
-
 
   return db;
 }
