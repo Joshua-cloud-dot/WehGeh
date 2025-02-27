@@ -7,7 +7,7 @@ node_modules/
 .env
 
 # database
-db/
+
 
 # other dirs
 playground/

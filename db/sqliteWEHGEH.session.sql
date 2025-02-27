@@ -29,9 +29,9 @@ DROP TABLE Raum
 
 -- Mit Werten Befüllen
 
-INSERT INTO Mitbewohner(MitName) VALUES ('Karol')
-INSERT INTO Mitbewohner(MitName) VALUES ('Konstantin')
-INSERT INTO Mitbewohner(MitName) VALUES ('Joshua')
+INSERT INTO Mitbewohner(MitName) VALUES ('Karol');
+INSERT INTO Mitbewohner(MitName) VALUES ('Konstantin');
+INSERT INTO Mitbewohner(MitName) VALUES ('Joshua');
 
 INSERT INTO Raum(Bezeichnung) VALUES ('Wohnzimmer');
 INSERT INTO Raum(Bezeichnung) VALUES ('Küche');

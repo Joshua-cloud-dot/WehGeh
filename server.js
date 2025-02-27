@@ -9,8 +9,8 @@ const http = require('http');
 const fs = require('fs');
 const logicPutzplan = require('./logicPutzplan.js');
 const dbCon = require('./db/dbCon.js');
-const reminder = require('./reminder.js');
-const schedule = require('node-schedule');
+// const reminder = require('./reminder.js');
+// const schedule = require('node-schedule');
 
 
 // util functions
@@ -50,22 +50,23 @@ const weekPlan = logicPutzplan.constructWeekPlan(currentWeekNum);
 
 
 
+// FIXME:
 // start Whats App Web for sending Reminders
-reminder.sendWeeklyReminders().catch(console.error);
-// start a job to update the reminder message for each week
-const job = schedule.scheduleJob('59 * * * *', function () {
+// reminder.sendWeeklyReminders().catch(console.error);
+// // start a job to update the reminder message for each week
+// const job = schedule.scheduleJob('59 * * * *', function () {
 
-  console.log("jobbing");
-  const weekPlan = logicPutzplan.constructWeekPlan(currentWeekNum);
+//   console.log("jobbing");
+//   const weekPlan = logicPutzplan.constructWeekPlan(currentWeekNum);
 
-  let msg =
-    `Putzplan für Kalenderwoche ${currentWeekNum}:%0a  Karol:      ${weekPlan[0].raumBez}%0a  Konstantin: ${weekPlan[1].raumBez}%0a  Joshua:     ${weekPlan[2].raumBez}`;
-  console.log(`Changing message to:\n\n${msg} `);
+//   let msg =
+//     `Putzplan für Kalenderwoche ${currentWeekNum}:%0a  Karol:      ${weekPlan[0].raumBez}%0a  Konstantin: ${weekPlan[1].raumBez}%0a  Joshua:     ${weekPlan[2].raumBez}`;
+//   console.log(`Changing message to:\n\n${msg} `);
 
 
 
-  reminder.changeMessage(msg);
-});
+//   reminder.changeMessage(msg);
+// });
 
 
 // Parse JSON bodies (as sent by API clients)
