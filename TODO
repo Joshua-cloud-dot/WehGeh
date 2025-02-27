@@ -1,6 +1,7 @@
 
 2. Care for database Reinigung Wochennummern will repeat on start of new year. yould include another attribute of year.
 
+TODO:
 3. rewrite with Vue.js
 
 4. Add Navigation Bar to prepare for more landing pages

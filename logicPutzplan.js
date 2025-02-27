@@ -114,6 +114,7 @@ const getPutzplanForWeekNum = async (wn) => {
 
 
 exports.getPutzplanForWeekNum = getPutzplanForWeekNum;
+exports.constructWeekPlan = constructWeekPlan;
 
 
 

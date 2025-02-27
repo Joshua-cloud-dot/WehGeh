@@ -9,6 +9,27 @@ const http = require('http');
 const fs = require('fs');
 const logicPutzplan = require('./logicPutzplan.js');
 const dbCon = require('./db/dbCon.js');
+const reminder = require('./reminder.js');
+const schedule = require('node-schedule');
+
+
+// util functions
+function getWeekNumber(d) {
+  // Copy date so don't modify original
+  d = new Date(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()));
+  // Set to nearest Thursday: current date + 4 - current day number
+  // Make Sunday's day number 7
+  d.setUTCDate(d.getUTCDate() + 4 - (d.getUTCDay() || 7));
+  // Get first day of year
+  var yearStart = new Date(Date.UTC(d.getUTCFullYear(), 0, 1));
+  // Calculate full weeks to nearest Thursday
+  var weekNo = Math.ceil((((d - yearStart) / 86400000) + 1) / 7);
+  // Return array of year and week number
+  return [d.getUTCFullYear(), weekNo];
+}
+
+// get current Week Number
+let currentWeekNum = getWeekNumber(new Date())[1];
 
 
 // TODO: db muss alte Daten löschen oder noch Attribut Jahr bekommen
@@ -25,6 +46,26 @@ const dbCon = require('./db/dbCon.js');
 // Create an Express app
 const app = express();
 const port = 8443;
+const weekPlan = logicPutzplan.constructWeekPlan(currentWeekNum);
+
+
+
+// start Whats App Web for sending Reminders
+reminder.sendWeeklyReminders().catch(console.error);
+// start a job to update the reminder message for each week
+const job = schedule.scheduleJob('59 * * * *', function () {
+
+  console.log("jobbing");
+  const weekPlan = logicPutzplan.constructWeekPlan(currentWeekNum);
+
+  let msg =
+    `Putzplan für Kalenderwoche ${currentWeekNum}:%0a  Karol:      ${weekPlan[0].raumBez}%0a  Konstantin: ${weekPlan[1].raumBez}%0a  Joshua:     ${weekPlan[2].raumBez}`;
+  console.log(`Changing message to:\n\n${msg} `);
+
+
+
+  reminder.changeMessage(msg);
+});
 
 
 // Parse JSON bodies (as sent by API clients)
@@ -163,7 +204,7 @@ app.route('/Reinigung')
     let params = Object.keys(req.body).map(function (k) { return req.body[k] });
     console.log(params)
 
-    
+
     const db = dbCon.connectDB();
 
     db.run(sql, params, (err) => {
@@ -187,6 +228,9 @@ app.route('/Reinigung')
 //   // process.env.MESSAGE_STYLE
 //   res.json({"message": process.env.MESSAGE_STYLE});
 // })
+
+
+
 
 // Start the server
 app.listen(port, () => {
