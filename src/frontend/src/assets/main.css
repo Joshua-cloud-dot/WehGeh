@@ -1,4 +1,19 @@
 @import './output.css';
+
+
+
+* {
+ user-select: none; /*Prevent user from clicking into uneditable text on Website  */
+ cursor: auto;
+ outline: none;
+}
+
+
+
+
+
+
+/* default vue init stylings: */
 /* 
 #app {
   max-width: 1280px;
