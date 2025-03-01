@@ -1,9 +1,10 @@
 /*this module handles Database connectivity*/
 
-const sqlite3 = require('sqlite3').verbose();
-const path = require('path');
+import sqlite3 from 'sqlite3';
+import path from 'path';
 
 
+const __dirname = path.dirname(new URL(import.meta.url).pathname)
 
 
 function connectDB() {
@@ -16,5 +17,6 @@ function connectDB() {
   return db;
 }
 
-exports.connectDB = connectDB;
-
+export default {
+  connectDB: connectDB,
+}

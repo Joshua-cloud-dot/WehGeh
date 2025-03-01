@@ -48,7 +48,7 @@ VALUES (
 Delete FROM Reinigung
 
 SELECT * FROM Mitbewohner;
-SELECT * FROM Raum;
+SELECT * FROM Raum
 SELECT * FROM Reinigung;
 
 
@@ -59,10 +59,10 @@ commit
 SELECT Erledigt FROM Reinigung WHERE Kalenderwoche=6 AND RaumBez = 'Bäder' AND MitName='Joshua'
 UPDATE Reinigung SET Erledigt=FALSE
 
-UPDATE Reinigung SET Erledigt=FALSE 
-    WHERE MitName = 'Konstantin'
-    AND RaumBez = 'Wohnzimmer'
-    AND Kalenderwoche = 4;
+UPDATE Reinigung SET Erledigt=TRUE 
+    WHERE MitName = 'Joshua'
+    AND RaumBez = 'Bäder'
+    AND Kalenderwoche = 7;
 
 
 INSERT INTO Reinigung (MitName, RaumBez, Kalenderwoche, Erledigt)

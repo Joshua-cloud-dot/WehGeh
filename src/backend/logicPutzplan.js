@@ -1,5 +1,4 @@
-const dbCon = require('../../db/dbCon.js');
-const sqlite3 = require('sqlite3').verbose();
+import dbCon from './db/dbCon.js';
 
 const rotateArrayRight = (arr, rotNum) => {
   let last;
@@ -113,8 +112,8 @@ const getPutzplanForWeekNum = async (wn) => {
 };
 
 
-exports.getPutzplanForWeekNum = getPutzplanForWeekNum;
-exports.constructWeekPlan = constructWeekPlan;
-
-
+export default  {
+  getPutzplanForWeekNum: getPutzplanForWeekNum,
+  constructWeekPlan: constructWeekPlan,
+}
 
