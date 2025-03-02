@@ -1,7 +1,5 @@
 
 
-
-
 // util functions
 export function getWeekNumber(d) {
   // Copy date so don't modify original

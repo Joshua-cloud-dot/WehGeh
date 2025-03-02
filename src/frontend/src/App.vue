@@ -1,14 +1,14 @@
 <script setup>
-import CleaningTable from './components/CleaningTable.vue';
+// import CleaningTable from './components/CleaningTable.vue';
+import NavigationBar from './components/NavigationBar.vue';
 </script>
 
 <template>
-<header>
-    <h1 class="text-3xl underline">WehGeh Putzplan</h1> 
+  <header>
+    <NavigationBar/>
   </header>
   <main>
-    <!-- cleaning Table component -->
-    <CleaningTable />
+    <router-view></router-view>
   </main>
   <footer></footer>
 </template>

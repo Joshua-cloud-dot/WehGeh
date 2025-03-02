@@ -2,9 +2,6 @@
   import { getWeekNumber } from '@/utils/weeks';
   import api from '@/services/api.js'
 
-  
-
-
   export default {
     data() {
       return {
@@ -13,8 +10,6 @@
         greenColor: "bg-green-900",
         currentWeekNum: getWeekNumber(new Date())[1],
         loading: true,
-
-
       };
     },
     async created() {
@@ -22,7 +17,6 @@
         this.tableData = await api.fetchTableData();
         
         // Set loading to false when data is ready
-
         this.loading = false;
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -42,12 +36,12 @@
         }
         api.changeReinigungStatus(mitName, weekNum, raumBez, erledigt);
       }
-      
     }
   };
 </script>
 
 <template>
+    <h1 class="text-3xl underline">WehGeh Putzplan</h1> 
   <div class="table-wrapper centered" style="overflow-x:auto;">
     <table class="table-auto border-collapse border border-gray-400 bg-slate-900" id="table">
       <caption>
@@ -63,7 +57,6 @@
       </thead>
       <div v-if="loading" class="text-xl text-center w-full"  >Loading...</div>
       <tbody v-else class= "bg-slate-700 text-slate-400" >
-
         <tr v-for="(weekPlan, weekNum) in tableData">
           <td class="td-week-number" :class="weekNum == currentWeekNum ? 'text-3xl':'text-sm'" >{{ weekNum }}</td>
           <td v-for="(cleaning) in weekPlan">
