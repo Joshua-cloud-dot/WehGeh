@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 
-const apiAddr = "http://localhost:5000";
+const apiAddr = "https://wehgehweb.com";
 
 // Reinigung Table component
 //---------------------------
