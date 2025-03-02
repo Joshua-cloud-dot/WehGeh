@@ -71,10 +71,6 @@ app.use('/', function (req, res, next) {
 });
 
 
-app.get("/testRoute", (req, res) => {
-  res.send("Hello from server test");
-});
-
 /*
  * @param: weekNum: is the clientside current week Number  
  * Description: This route gets called, when the site is loaded
@@ -124,63 +120,6 @@ app.get("/:weekNum/render-table", (req, res) => {
 
 // example with query
 app.route('/Reinigung')
-  .get(function (req, res) {
-    console.log(req.query);
-
-    if (req.query.MitName && req.query.RaumBez && req.query.Kalenderwoche) {
-      const db = dbCon.connectDB();
-
-      db.serialize(() => {
-
-        // Query if data exists
-        let sql = `
-          SELECT COUNT(*) as count FROM Reinigung 
-          WHERE Kalenderwoche=?
-            AND RaumBez=? 
-            AND MitName=?`;
-
-        db.get(sql, [req.query.Kalenderwoche, req.query.RaumBez, req.query.MitName], (err, row) => {
-          if (err) {
-            res.status(500).json({ error: err.message });
-          } else if (row.count === 0) {
-            console.log("Reinigung doesn't exist yet. Creating new");
-
-            // Reinigung doesn't exist so it will be created with False because this Request
-            // can only happen with newly created Reinigungen from rendering
-            sql = `
-                INSERT INTO Reinigung (MitName, RaumBez, Kalenderwoche, Erledigt)
-                VALUES (
-                    ?,
-                    ?,
-                    ?,
-                    FALSE
-                  )`;
-
-            db.run(sql, [req.query.MitName, req.query.RaumBez, req.query.Kalenderwoche])
-            res.json(false);
-          } else {
-            sql = `
-              SELECT Erledigt FROM Reinigung 
-              WHERE Kalenderwoche=?
-                AND RaumBez=? 
-                AND MitName=?`;
-
-            db.get(sql, [req.query.Kalenderwoche, req.query.RaumBez, req.query.MitName], (err, row) => {
-              if (err) {
-                res.status(500).json({ error: err.message });
-              } else {
-                console.log(row);
-                res.json(row);
-              }
-            });
-          }
-        });
-      });
-      db.close();
-    } else {
-      res.sendStatus(404);
-    }
-  })
   .post(function (req, res) {
     // Query if data exists
     let sql = `

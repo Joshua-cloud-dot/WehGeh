@@ -30,9 +30,19 @@
       }
     },
     methods: {
-      changeReinigungStatus(one, to, three) {
-        console.log("to be implemented");
+      updateReinigung (mitName, weekNum, raumBez) {
+        const tdEl = document.getElementById(`${mitName}-${weekNum}-${raumBez}`);
+        let erledigt;
+        if (tdEl.classList.contains(this.greenColor)) {
+          tdEl.classList.replace(this.greenColor, this.redColor);
+          erledigt = false;
+        } else {
+          tdEl.classList.replace(this.redColor, this.greenColor);
+          erledigt = true;
+        }
+        api.changeReinigungStatus(mitName, weekNum, raumBez, erledigt);
       }
+      
     }
   };
 </script>
@@ -57,7 +67,7 @@
         <tr v-for="(weekPlan, weekNum) in tableData">
           <td class="td-week-number" :class="weekNum == currentWeekNum ? 'text-3xl':'text-sm'" >{{ weekNum }}</td>
           <td v-for="(cleaning) in weekPlan">
-            <div v-if="(cleaning.raumBez != '')" :id="cleaning.mitName + '-'+ weekNum + '-' + cleaning.raumBez" class="text-sm font-thin button" :class="!!cleaning.erledigt ? greenColor : redColor"  @:click="changeReinigungStatus( cleaning.mitName, weekNum, cleaning.raumBez)">
+            <div v-if="(cleaning.raumBez != '')" :id="cleaning.mitName + '-'+ weekNum + '-' + cleaning.raumBez" class="text-sm font-thin button" :class="!!cleaning.erledigt ? greenColor : redColor"  @:click="updateReinigung( cleaning.mitName, weekNum, cleaning.raumBez)">
               {{ cleaning.raumBez }}
             </div>
             <span v-else class="break">-</span>
@@ -69,15 +79,5 @@
 </template>
 
 <style scoped>
-
-
-#idiot-btn {
-  border: 1px solid red;
-
-}
-
-#idiot-btn:hover {
- background-color: gray; 
-}
 
 </style>

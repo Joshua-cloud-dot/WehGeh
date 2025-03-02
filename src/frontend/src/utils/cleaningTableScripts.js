@@ -17,49 +17,21 @@ const redColor = "bg-red-950";
 const greenColor = "bg-green-900";
 
 
-// util functions
-function getWeekNumber(d) {
-  // Copy date so don't modify original
-  d = new Date(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()));
-  // Set to nearest Thursday: current date + 4 - current day number
-  // Make Sunday's day number 7
-  d.setUTCDate(d.getUTCDate() + 4 - (d.getUTCDay() || 7));
-  // Get first day of year
-  var yearStart = new Date(Date.UTC(d.getUTCFullYear(), 0, 1));
-  // Calculate full weeks to nearest Thursday
-  var weekNo = Math.ceil((((d - yearStart) / 86400000) + 1) / 7);
-  // Return array of year and week number
-  return [d.getUTCFullYear(), weekNo];
-}
-
-// get current Week Number
-let currentWeekNum = getWeekNumber(new Date())[1];
 
 
-// Fetch all necessary Data for rendering from the API
-const fetchTableRenderData = async (weekNum) => {
-  const response = await fetch(`/${weekNum}/render-table`);
-  if (!response.ok) {
-    throw new Error(`Error: ${response.statusText}`);
-  }
-  const data = await response.json();
-  return data;
-};
-
-
-const reinigungErledigt = async (mitName, wn, raumBez) => {
-  try {
-    const response = await fetch(`/Reinigung?MitName=${mitName}&Kalenderwoche=${wn}&RaumBez=${raumBez}`);
-    if (!response.ok) {
-      throw new Error(`Error: ${response.statusText}`);
-    }
-    const data = await response.json();
-    return data;  // Return the JSON data from the API
-  } catch (err) {
-    console.error('Error fetching data:', err);
-    return null;  // Return null in case of error
-  }
-};
+// const reinigungErledigt = async (mitName, wn, raumBez) => {
+//   try {
+//     const response = await fetch(`/Reinigung?MitName=${mitName}&Kalenderwoche=${wn}&RaumBez=${raumBez}`);
+//     if (!response.ok) {
+//       throw new Error(`Error: ${response.statusText}`);
+//     }
+//     const data = await response.json();
+//     return data;  // Return the JSON data from the API
+//   } catch (err) {
+//     console.error('Error fetching data:', err);
+//     return null;  // Return null in case of error
+//   }
+// };
 
 
 // Handle cleaning updates 
@@ -126,29 +98,3 @@ const fillTable = async (currentWeekNum) => {
   tableStr += `</tbody>`;
   table.innerHTML += tableStr;
 };
-
-
-// render index.html
-weekNumberSpan.innerText = currentWeekNum;
-
-fillTable(currentWeekNum);
-
-
-// let wn = 5;
-// let raumBez = 'Bäder';
-// let mitName = 'Karol';
-
-// fetch(`/Reinigung?MitName=${mitName}&Kalenderwoche=${wn}&RaumBez=${raumBez}`)
-//   .then(response => response.json())
-//   .then(data => {
-//     console.log(data);
-//   })
-//   .catch(err => {
-//     console.error('Error fetching data:', err);
-//   })
-
-
-
-
-
-
