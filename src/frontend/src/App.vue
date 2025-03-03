@@ -13,3 +13,11 @@ import NavigationBar from './components/NavigationBar.vue';
   <footer></footer>
 </template>
 
+
+<style>
+:root {
+  --main-font: "Rethink Sans"
+}
+
+
+</style>

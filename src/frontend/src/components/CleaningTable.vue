@@ -14,7 +14,7 @@
     },
     async created() {
       try {
-        this.tableData = await api.fetchTableData();
+        this.tableData = await api.fetchTableData(this.currentWeekNum);
         
         // Set loading to false when data is ready
         this.loading = false;

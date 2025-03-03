@@ -2,11 +2,12 @@ import axios from 'axios';
 
 
 const apiAddr = "https://wehgehweb.com";
+// const apiAddr = "http://localhost:5000";
 
 // Reinigung Table component
 //---------------------------
-async function fetchTableData() {      
-    const response = await axios.get(apiAddr + "/9/render-table");
+async function fetchTableData(weekNum) {      
+    const response = await axios.get(apiAddr + "/" + weekNum + "/render-table");
     return response.data; 
 }
 // Handle cleaning updates 

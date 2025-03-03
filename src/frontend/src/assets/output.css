@@ -1,4 +1,9 @@
 /*! tailwindcss v4.0.5 | MIT License | https://tailwindcss.com */
+
+
+:root {
+  --main-font: "Rethink Sans"
+}
 @layer theme, base, components, utilities;
 @layer theme {
   :root, :host {
@@ -42,6 +47,7 @@
     );
   }
 }
+
 @layer base {
   *, ::after, ::before, ::backdrop, ::file-selector-button {
     box-sizing: border-box;
@@ -1885,7 +1891,7 @@ body {
 h1 {
   margin-top: 10px;
   text-align: center;
-  font-family: "Kumar One", serif;
+  font-family:var(--main-font), serif;
   letter-spacing: 1px;
 }
 table {
@@ -1893,7 +1899,7 @@ table {
   width: 100%;
 }
 thead {
-  font-family: "Kumar One", serif;
+  font-family:var(--main-font), serif;
   letter-spacing: 2px;
   border-bottom: 1px solid black;
 }
@@ -1902,17 +1908,17 @@ thead th {
 }
 td {
   text-align: center;
-  font-family: "Kumar One", serif;
+  font-family:var(--main-font), serif;
   font-weight: bold;
   letter-spacing: 1px;
 }
 tbody > tr > :nth-child(1) {
   text-align: left;
-  font-family: "Kumar One", serif;
+  font-family:var(--main-font), serif;
   padding-left: 5px;
 }
 caption {
-  font-family: "Kumar One", serif;
+  font-family:var(--main-font), serif;
   padding: 20px;
   font-weight: bold;
   caption-side: bottom;
