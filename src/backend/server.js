@@ -64,6 +64,9 @@ app.use(bodyParser.urlencoded({ extended: true }));
 // serve static files as middleware
 app.use(express.static(path.join(__dirname, 'public')));
 
+app.get('/putzplan', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'index.html'));
+});
 
 app.use('/', function (req, res, next) {
   console.log(req.method + " " + req.path + " - " + req.ip);
